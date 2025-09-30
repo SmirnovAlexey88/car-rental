@@ -1,0 +1,17 @@
+class BaseClient:
+    """Базовый класс клиента"""
+    
+    def __init__(self, last_name: str, first_name: str, middle_name: str, phone: str):
+        self._last_name = self._validate_name(last_name, "Фамилия")
+        self._first_name = self._validate_name(first_name, "Имя")
+        self._middle_name = self._validate_name(middle_name, "Отчество", True)
+        self._phone = self._validate_phone(phone)
+    
+    # Общие методы валидации, свойства и методы вынесены в базовый класс
+    # Устранено дублирование кода
+
+class ShortClient(BaseClient):
+    """Краткая версия - наследует общую функциональность"""
+
+class Client(BaseClient):
+    """Полная версия - расширяет базовый класс"""
