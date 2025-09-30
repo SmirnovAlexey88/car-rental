@@ -1,0 +1,32 @@
+class BaseClient:
+    def get_initials(self):
+        middle_init = f" {self._middle_name[0]}." if self._middle_name else ""
+        return f"{self._last_name} {self._first_name[0]}.{middle_init}"
+
+    def __eq__(self, other):
+        if not isinstance(other, BaseClient):
+            return False
+        return (
+            self._last_name == other._last_name
+            and self._first_name == other._first_name
+            and self._middle_name == other._middle_name
+            and self._phone == other._phone
+        )
+
+class Client(BaseClient):
+    def __str__(self):
+        """Полная версия для вывода"""
+        return (
+            f"Клиент: {self.get_initials()}\n"
+            f"Адрес: {self._address}\n"
+            f"Телефон: +7{self._phone[1:]}"
+        )
+
+    def short_display(self):
+        """Краткая версия для вывода"""
+        return f"{self.get_initials()} - +7{self._phone[1:]}"
+
+    def __eq__(self, other):
+        if not isinstance(other, Client):
+            return False
+        return super().__eq__(other) and self._address == other._address
