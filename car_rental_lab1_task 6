@@ -1,0 +1,43 @@
+class Client(BaseClient):
+    def __init__(self, *args, **kwargs):
+        if len(args) == 1 and isinstance(args[0], str):
+            self._init_from_string(args[0])
+        elif len(args) == 1 and isinstance(args[0], dict):
+            self._init_from_dict(args[0])
+        elif len(args) == 5:
+            self._init_from_params(*args)
+        elif kwargs:
+            self._init_from_dict(kwargs)
+        else:
+            self._init_from_params("", "", "", "", "")
+
+    def _init_from_string(self, data_string: str):
+        parts = [part.strip() for part in data_string.split(",")]
+        if len(parts) > 5:
+            last_name = parts[0]
+            first_name = parts[1]
+            middle_name = parts[2]
+            address = ",".join(parts[3:-1])
+            phone = parts[-1]
+            self._init_from_params(last_name, first_name, middle_name, address, phone)
+        elif len(parts) == 5:
+            self._init_from_params(*parts)
+        else:
+            raise ValueError("Строка должна содержать минимум 5 значений, разделенных запятыми")
+
+    def _init_from_dict(self, data_dict: dict):
+        self._init_from_params(
+            data_dict.get("last_name", ""),
+            data_dict.get("first_name", ""),
+            data_dict.get("middle_name", ""),
+            data_dict.get("address", ""),
+            data_dict.get("phone", ""),
+        )
+
+    @classmethod
+    def from_string(cls, data_string: str):
+        return cls(data_string)
+
+    @classmethod
+    def from_dict(cls, data_dict: dict):
+        return cls(data_dict)
