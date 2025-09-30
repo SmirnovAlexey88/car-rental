@@ -1,0 +1,34 @@
+class Client(BaseClient):
+    """Полная версия клиента"""
+
+    def __init__(self, *args, **kwargs):
+        if len(args) == 1 and isinstance(args[0], str):
+            # Конструктор из строки
+            self._init_from_string(args[0])
+        elif len(args) == 1 and isinstance(args[0], dict):
+            # Конструктор из словаря
+            self._init_from_dict(args[0])
+        elif len(args) == 5:
+            # Конструктор из отдельных параметров
+            self._init_from_params(*args)
+        elif kwargs:
+            # Конструктор из ключевых аргументов
+            self._init_from_dict(kwargs)
+        else:
+            # Конструктор по умолчанию
+            self._init_from_params("", "", "", "", "")
+
+    def _init_from_params(
+        self,
+        last_name: str,
+        first_name: str,
+        middle_name: str,
+        address: str,
+        phone: str,
+    ):
+        super().__init__(last_name, first_name, middle_name, phone)
+        self._address = self._validate_address(address)
+
+    @property
+    def address(self):
+        return self._address
