@@ -1,0 +1,11 @@
+class ShortClient(BaseClient):
+    """Краткая версия клиента (только ФИО и телефон)"""
+
+    def __init__(self, last_name: str, first_name: str, middle_name: str, phone: str):
+        super().__init__(last_name, first_name, middle_name, phone)
+
+    def __str__(self):
+        return self.get_initials()
+
+    def display_with_phone(self):
+        return f"{self} - +7{self._phone[1:]}"
