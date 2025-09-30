@@ -1,0 +1,38 @@
+class BaseClient:
+    """Базовый класс клиента"""
+
+    def __init__(self, last_name: str, first_name: str, middle_name: str, phone: str):
+        self._last_name = self._validate_name(last_name, "Фамилия")
+        self._first_name = self._validate_name(first_name, "Имя")
+        self._middle_name = self._validate_name(middle_name, "Отчество", True)
+        self._phone = self._validate_phone(phone)
+
+    @staticmethod
+    def _validate_name(name: str, field_name: str, optional: bool = False) -> str:
+        if optional and not name:
+            return ""
+        if not name or not name.strip():
+            raise ValueError(f"{field_name} не может быть пустым")
+        if len(name.strip()) < 2:
+            raise ValueError(f"{field_name} должен содержать минимум 2 символа")
+        if not name.replace(" ", "").isalpha():
+            raise ValueError(f"{field_name} должен содержать только буквы")
+        return name.strip()
+
+    @staticmethod
+    def _validate_phone(phone: str) -> str:
+        if not phone or not phone.strip():
+            raise ValueError("Телефон не может быть пустым")
+        clean_phone = "".join(filter(str.isdigit, phone))
+        if len(clean_phone) != 11:
+            raise ValueError("Телефон должен содержать 11 цифр")
+        return clean_phone
+
+class Client(BaseClient):
+    @staticmethod
+    def _validate_address(address: str) -> str:
+        if not address or not address.strip():
+            raise ValueError("Адрес не может быть пустым")
+        if len(address.strip()) < 10:
+            raise ValueError("Адрес должен содержать минимум 10 символов")
+        return address.strip()
